@@ -1,13 +1,23 @@
 FROM node:lts-buster
-  
+
+RUN apt-get update && \
+  apt-get install -y \
+  ffmpeg \
+  imagemagick \
+  webp && \
+  apt-get upgrade -y && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/luffy8979/Zokou-MD-english /root/Zokou_BOt
+WORKDIR /root/Zokou_Bot/
+
+
 COPY package.json .
-
-
 RUN npm install pm2 -g
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5000
 
-CMD ["node","index.js" ]
+CMD ["npm", "run" , "web"]
